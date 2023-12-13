@@ -1,8 +1,10 @@
 package com.example.saving;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -16,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.textView);
+
+        if (savedInstanceState != null) {
+            textView.setText(savedInstanceState.getString("textToBundle"));
+        }
 
         Log.d("LifeCycle method: ", "onCreate!");
         textView.append("onCreate!" + "\n");
@@ -59,5 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("LifeCycle method: ", "onDestroy!");
         textView.append("onDestroy!" + "\n");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.d("onSaveInstanceState: ", "onSaveInstanceState!");
+
+        outState.putString("textToBundle", textView.getText().toString());
     }
 }
