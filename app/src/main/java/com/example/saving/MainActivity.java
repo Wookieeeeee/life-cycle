@@ -10,38 +10,57 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private SeekBar seekBar;
+    private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CountDownTimer myTimer = new CountDownTimer(10000, 1000) {
+        seekBar = findViewById(R.id.seekBar);
+        textView = findViewById(R.id.textView);
+
+        seekBar.setMax(600);
+        seekBar.setProgress(60);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                Log.d("myTimer: ", String.valueOf(millisUntilFinished / 1000) + " second left.");
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int minutes = progress / 60;
+                int seconds = progress - (minutes * 60);
+
+                String minutesStr = "";
+                String secondsStr = "";
+
+                if (minutes < 10) {
+                    minutesStr = "0" + minutes;
+                } else {
+                    minutesStr = String.valueOf(minutes);
+                }
+
+                if (seconds < 10) {
+                    secondsStr = "0" + seconds;
+                } else {
+                    secondsStr = String.valueOf(seconds);
+                }
+
+                textView.setText(minutesStr + ":" + secondsStr);
             }
 
             @Override
-            public void onFinish() {
-                Log.d("myTimer: ", "Finish!()");
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
             }
-        };
 
-        myTimer.start();
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
-//        final Handler handler = new Handler();
-//
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("Runnable: ", "Two seconds are passed");
-//                handler.postDelayed(this, 2000);
-//            }
-//        };
-//
-//        handler.post(runnable);
+            }
+        });
     }
 }
