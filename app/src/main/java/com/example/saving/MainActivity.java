@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -16,14 +18,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("mySharedPreferences", Context.MODE_PRIVATE);
+        CountDownTimer myTimer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.d("myTimer: ", String.valueOf(millisUntilFinished / 1000) + " second left.");
+            }
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        //editor.putString("newHelloText", "helloSharedPreferences");
-        editor.clear();
-        editor.apply();
+            @Override
+            public void onFinish() {
+                Log.d("myTimer: ", "Finish!()");
+            }
+        };
 
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(sharedPreferences.getString("newHelloText", "DefaultText"));
+        myTimer.start();
+
+//        final Handler handler = new Handler();
+//
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d("Runnable: ", "Two seconds are passed");
+//                handler.postDelayed(this, 2000);
+//            }
+//        };
+//
+//        handler.post(runnable);
     }
 }
